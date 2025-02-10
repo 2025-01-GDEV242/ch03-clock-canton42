@@ -7,7 +7,7 @@
  * range of the clock is 12:00 pm (midnight) to 11:59 pm (one minute before 
  * midnight).
  * 
- * Rhis version requires the programmer to maintain an internal variable 
+ * This version requires the programmer to maintain an internal variable 
  * to indicate if it is ante-meridian or post-meridian (AM or PM).
  * 
  * The clock display receives "ticks" (via the timeTick method) every minute
@@ -22,6 +22,7 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private boolean isAM; //internal variable that tracks AM/PM
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
@@ -31,6 +32,7 @@ public class ClockDisplay
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
+        isAM = true;
         updateDisplay();
     }
 
@@ -39,11 +41,11 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, boolean am)
     {
         hours = new NumberDisplay(24);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        setTime(hour, minute, am);
     }
 
     /**
@@ -55,6 +57,9 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            if (hours.getValue() == 1) {
+                isAM =! isAM;
+            }
         }
         updateDisplay();
     }
@@ -63,10 +68,11 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, boolean am)
     {
-        hours.setValue(hour);
+        hours.setValue(hour == 12 ? 12 : hour % 12);
         minutes.setValue(minute);
+        isAM = am;
         updateDisplay();
     }
 
@@ -83,7 +89,11 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        int displayHour = hours.getValue();
+        if (displayHour == 0) {
+            displayHour = 12;
+        }
+        
+        displayString = String.format("%02d:%02d %s", displayHour, minutes.getValue(), isAM ? "AM" : "PM");
     }
 }

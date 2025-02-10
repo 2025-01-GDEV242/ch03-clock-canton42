@@ -7,7 +7,8 @@
  * range of the clock is 12:00 am (midnight) to 11:59 pm (one minute before 
  * midnight).
  * 
- * The clock represents hours in the range from 0..23, and range 12..11 as shown on US clocks.
+ * The clock represents hours in the range from 0..23, and range 12..11 
+ * as shown on US clocks.
  * 
  * The clock display receives "ticks" (via the timeTick method) every minute
  * and reacts by incrementing the display. This is done in the usual clock
@@ -83,7 +84,15 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        int hourValue = hours.getValue();
+        String period = (hourValue < 12) ? "AM" : "PM";
+        
+        int displayHour = hourValue % 12;
+        if (displayHour == 0) {
+            displayHour = 12;
+        }
+        
+        displayString = String.format("%02d:%02d %s", displayHour, minutes.getValue(), period);
+
     }
 }

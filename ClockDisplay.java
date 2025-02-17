@@ -85,14 +85,14 @@ public class ClockDisplay
     private void updateDisplay()
     {
         int hourValue = hours.getValue();
-        String period = (hourValue < 12) ? "AM" : "PM";
+        String meridian = (hourValue < 12) ? "AM" : "PM";
         
         int displayHour = hourValue % 12;
         if (displayHour == 0) {
             displayHour = 12;
         }
         
-        displayString = String.format("%02d:%02d %s", displayHour, minutes.getValue(), period);
+        displayString = String.format("%02d:%02d %s", displayHour, minutes.getValue(), meridian);
 
     }
 }

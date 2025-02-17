@@ -58,10 +58,10 @@ public class ClockDisplay
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
             if (hours.getValue() == 11) {
-                isAM =! isAM;
+                isAM = !isAM;
             }
             if (hours.getValue() == 12) {
-                isAM =! isAM;
+                isAM = !isAM;
             }
         }
         updateDisplay();

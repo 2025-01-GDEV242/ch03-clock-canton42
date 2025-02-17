@@ -57,10 +57,7 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
-            if (hours.getValue() == 11) {
-                isAM = !isAM;
-            }
-            if (hours.getValue() == 12) {
+            if (hours.getValue() == 11 || hours.getValue() == 12) {
                 isAM = !isAM;
             }
         }
@@ -73,7 +70,11 @@ public class ClockDisplay
      */
     public void setTime(int hour, int minute, boolean am)
     {
-        hours.setValue(hour == 12 ? 12 : hour % 12);
+        if (hour == 12) {
+            hours.setValue(12);
+        } else {
+            hours.setValue(hour % 12);
+        }
         minutes.setValue(minute);
         isAM = am;
         updateDisplay();
